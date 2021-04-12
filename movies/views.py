@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from movies.models import *
+from django.views.generic import DetailView
 
 # Create your views (pohledy) here.
 
@@ -21,6 +22,13 @@ def index(request):
 
     """ Pomocí metody render vyrendrujeme šablonu index.html a předáme ji hodnoty v proměnné context k zobrazení """
     return render(request, 'index.html', context=context)
+
+
+class FilmDetailView(DetailView):
+    model = Film
+
+    context_object_name = 'film_detail' # Jméno kontextu
+    template_name = 'film/detail.html' # Složka, kam se údaj o filmu vypíše
 
 
 def topten(request):

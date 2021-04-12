@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %} Detail filmu {% endblock %}
+
+{% block content %}
+<h2>{{ film_detail.title|upper }}</h2>
+<p>Rok vzniku: {{ film_detail.release_date.year }}, stopáž: {{ film_detail.runtime }} minut</p>
+<p>{{ film_detail.plot }}</p>
+<p>Hodnocení:
+    {%  with ''|center:film_detail.rate as range %}
+    {% for _ in range %}*{% endfor %}
+    {% endwith %}
+</p>
+{% endblock %}
+
+{% block scripts %}{% endblock %}
