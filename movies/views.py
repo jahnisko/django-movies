@@ -30,8 +30,8 @@ def index(request):
 class FilmDetailView(DetailView):
     model = Film
     num_films = Film.objects.all().count()
-    context_object_name = 'film_detail' # Jméno kontextu
-    template_name = 'film/detail.html' # Složka, kam se údaj o filmu vypíše
+    context_object_name = 'film_detail'  # Jméno kontextu
+    template_name = 'film/detail.html'  # Složka, kam se údaj o filmu vypíše
 
 
 # Předem připravený instantní pohled, který můžeme využívat v rámci výpisů
@@ -39,9 +39,31 @@ class FilmDetailView(DetailView):
 class FilmListView(ListView):
     model = Film
 
-    context_object_name = 'film_list' # Jméno kontextu, proměnná, která se vyobrazuje na list.html
-    template_name = 'film/list.html' # Složka, kam se údaj o filmu vypíše, šablona
+    context_object_name = 'film_list'  # Jméno kontextu, proměnná, která se vyobrazuje na list.html
+    template_name = 'film/list.html'  # Složka, kam se údaj o filmu vypíše, šablona
     paginate_by = 4
+
+    def get_queryset(self):
+        # kwargs je klíčový argument, který pojmenuji 'genre_name'
+        if 'genre_name' in self.kwargs:
+            return Film.objects.filter(
+                genres__name=self.kwargs['genre_name']).all()  # Get 5 books containing the title war
+        else:
+            return Film.objects.all()
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['num_films'] = len(self.get_queryset())
+        if 'genre_name' in self.kwargs:
+            context['view_title'] = f"Žánr: {self.kwargs['genre_name']}"
+            context['view_head'] = f"Žánr filmu: {self.kwargs['genre_name']}"
+        else:
+            context['view_title'] = 'Filmy'
+            context['view_head'] = 'Přehled filmů'
+        return context
+
 
 def topten(request):
     return render(request, 'topten.html')
