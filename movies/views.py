@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
+
+from movies.forms import FilmModelForm
 from movies.models import *
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
 
 
 # Create your views (pohledy) here.
@@ -67,3 +70,26 @@ class FilmListView(ListView):
 
 def topten(request):
     return render(request, 'topten.html')
+
+
+# CreateView - instantní generický pohled
+class FilmCreateView(CreateView):
+    model = Film
+    # Pole, která chceme, aby se nám zobrazovala
+    fields = ['title', 'plot', 'poster', 'genres', 'release_date', 'runtime', 'rate']
+
+
+class FilmUpdateView(UpdateView):
+    model = Film
+    # Vybere všechna políčka, avšak je zde potenciální bezpečnostní riziko
+    # fields = '__all__' # Magická metoda, magický atribut
+    form_class = FilmModelForm
+    template_name = 'movies/film_bootstrap_form.html'
+
+
+class FilmDeleteView(DeleteView):
+    model = Film
+    # Přesměrování stránky z důvodu toho, že záznam je vymazaný a nemáme se na něj jak dostat
+    # Metoda reverse_lazy spolupracuje s urls.py, takže předáme, na jakou stránku nás to přesměruje - podle jména
+    success_url = reverse_lazy('film_list')
+

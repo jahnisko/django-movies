@@ -46,6 +46,10 @@
         </div>
     </div>
 </div>
+<div>
+    <a href="{% url 'film-update' film_detail.pk%}" class="btn btn-success">Editovat</a>
+    <a href="{% url 'film-delete' film_detail.pk%}" class="btn btn-danger">Smazat</a>
+</div>
 {% endblock %}
 
 {% block scripts %}

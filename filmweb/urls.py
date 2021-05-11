@@ -29,6 +29,7 @@ urlpatterns = [
     path('movies/', include('movies.urls')),
     # Přesměrování úvodní stránky na úvodní stránku projekt movies
     path('', RedirectView.as_view(url="movies/")),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

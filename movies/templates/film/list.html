@@ -24,7 +24,7 @@
                 {% for genre in film.genres.all %}{{ genre.name }}{% endfor %}
                 </p>
                 <p><strong>Hodnocení:</strong> {{ film.rate }}</p>
-                <a href="{% url 'film_detail' film.pk %}" class="btn btn-primary">Podrobnosti</a>
+                <a href="{% url 'film-detail' film.pk %}" class="btn btn-primary">Podrobnosti</a>
             </div>
         </div>
     </div>
@@ -43,6 +43,9 @@
        <!-- <strong>Celkový počet filmů:</strong> {{ num_films }} -->
         {% bootstrap_paginate page_obj range=10 %}
     </div>
+</div>
+<div>
+    <a href="{% url 'film-create' %}" class="btn btn-success">Nový záznam</a>
 </div>
 {% endif %}
 {% endblock %}
